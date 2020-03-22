@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My Blackjack App</string>
+    <string name="title">BLACKJACK</string>
+    <string name="new_game_button">NEW GAME</string>
+    <string name="card_height">150dp</string>
+    <string name="card_width">120dp</string>
+    <string name="next_card">HIT ME</string>
+    <string name="end_turn">STICK</string>
+    <string name="dealer_card_01">the dearler\'s first card</string>
+    <string name="player_card_01">the dearler\'s first card</string>
+    <string name="card_deck">the card deck</string>
+</resources>
