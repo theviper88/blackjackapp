@@ -30,10 +30,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun dealCard(view: View) {
-        val image = findViewById<ImageView>(R.id.playerCard01)
-        var randomcard = getRandomCard()
-        val imageResource = resources.getIdentifier(randomcard , "drawable", packageName)
-        image.setImageResource(imageResource)
+        for (location in 1..4) {
+            var whichLocation = "playerCard" + String.format("%02d", location)
+            val locationResource = resources.getIdentifier(whichLocation, "id", packageName)
+            val image = findViewById<ImageView>(locationResource)
+            if(image.drawable == null) {
+                var randomCard = getRandomCard()
+                val imageResource = resources.getIdentifier(randomCard , "drawable", packageName)
+                image.setImageResource(imageResource)
+                break
+            }
+        }
     }
 
     private fun getRandomCard(): String {

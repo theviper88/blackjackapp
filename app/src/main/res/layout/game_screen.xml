@@ -20,7 +20,31 @@
             android:layout_width="100dp"
             android:layout_height="125dp"
             android:layout_alignParentBottom="true"
-            android:contentDescription="@string/player_card_01" />
+            android:contentDescription="First card" />
+
+        <ImageView
+            android:id="@+id/playerCard02"
+            android:layout_width="100dp"
+            android:layout_height="125dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="50dp"
+            android:contentDescription="Second card" />
+
+        <ImageView
+            android:id="@+id/playerCard03"
+            android:layout_width="100dp"
+            android:layout_height="125dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="100dp"
+            android:contentDescription="Third card" />
+
+        <ImageView
+            android:id="@+id/playerCard04"
+            android:layout_width="100dp"
+            android:layout_height="125dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="150dp"
+            android:contentDescription="Fourth card" />
 
         <ImageView
             android:id="@+id/cardDeck"
