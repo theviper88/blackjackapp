@@ -1,9 +1,11 @@
 package com.example.blackjack
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import kotlin.random.Random
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,7 +29,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.game_screen)
     }
 
-    fun dealCard(view: View) {}
+    fun dealCard(view: View) {
+        val image = findViewById<ImageView>(R.id.playerCard01)
+        var randomcard = getRandomCard()
+        val imageResource = resources.getIdentifier(randomcard , "drawable", packageName)
+        image.setImageResource(imageResource)
+    }
+
+    private fun getRandomCard(): String {
+        val suit = Random.nextInt(1, 4)
+        val number = Random.nextInt(1, 13)
+
+        return "card_" + suit + String.format("%02d", number)
+    }
 
 
 }
