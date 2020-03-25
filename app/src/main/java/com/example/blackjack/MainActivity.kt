@@ -1,13 +1,18 @@
 package com.example.blackjack
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
 
 
 class MainActivity : AppCompatActivity() {
+    private var count = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,22 +30,33 @@ class MainActivity : AppCompatActivity() {
     deck.addAll(card_names)
     deck.shuffle()*/
 
+    fun convertDpToPx(context: Context, dp: Int): Int {
+        return (dp * context.getResources().getDisplayMetrics().density).toInt()
+    }
+
     fun newGame(view: View) {
         setContentView(R.layout.game_screen)
     }
 
     fun dealCard(view: View) {
-        for (location in 1..4) {
-            var whichLocation = "playerCard" + String.format("%02d", location)
-            val locationResource = resources.getIdentifier(whichLocation, "id", packageName)
-            val image = findViewById<ImageView>(locationResource)
-            if(image.drawable == null) {
-                var randomCard = getRandomCard()
-                val imageResource = resources.getIdentifier(randomCard , "drawable", packageName)
-                image.setImageResource(imageResource)
-                break
-            }
-        }
+        count += 1
+        val parent = findViewById<RelativeLayout>(R.id.RelativeLayout01)
+
+        val imageView = ImageView(this)
+        val params = RelativeLayout.LayoutParams(
+            convertDpToPx(this, 100),
+            convertDpToPx(this, 125))
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        params.leftMargin = 50*(count - 1)
+
+        imageView.layoutParams = params
+
+        var randomCard = getRandomCard()
+        val imageResource = resources.getIdentifier(randomCard , "drawable", packageName)
+        imageView.setImageResource(imageResource)
+
+        parent.addView(imageView)
     }
 
     private fun getRandomCard(): String {
