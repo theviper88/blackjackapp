@@ -13,6 +13,7 @@ import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private var count = 0
+    var playerTurn = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +47,11 @@ class MainActivity : AppCompatActivity() {
         val params = RelativeLayout.LayoutParams(
             convertDpToPx(this, 100),
             convertDpToPx(this, 125))
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        if(playerTurn) {
+            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        } else {
+            params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        }
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         params.leftMargin = 50*(count - 1)
 
@@ -57,6 +62,11 @@ class MainActivity : AppCompatActivity() {
         imageView.setImageResource(imageResource)
 
         parent.addView(imageView)
+    }
+
+    fun dealersGo(view: View) {
+        count = 0
+        playerTurn = false
     }
 
     private fun getRandomCard(): String {
