@@ -3,10 +3,7 @@ package com.example.blackjack
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
 
@@ -15,6 +12,7 @@ class MainActivity : AppCompatActivity() {
     private var count = 0
     var playerTurn = true
     var deck = makeDeckOfCards()
+    var score = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     fun newGame(view: View) {
         count = 0
+        score = 0
         playerTurn = true
         deck = makeDeckOfCards()
         setContentView(R.layout.game_screen)
@@ -61,30 +60,43 @@ class MainActivity : AppCompatActivity() {
 
         imageView.layoutParams = params
 
-        var randomCard = getRandomCard(deck)
-        val imageResource = resources.getIdentifier(randomCard , "drawable", packageName)
+        var randomCard = getRandomCard()
+        score += randomCard.number
+        val imageResource = resources.getIdentifier(randomCard.name , "drawable", packageName)
         imageView.setImageResource(imageResource)
 
         parent.addView(imageView)
+
+        if(score > 21) {
+            Toast.makeText(this,
+                "BUST!", Toast.LENGTH_LONG).show()
+            dealersGo(null)
+        }
     }
 
-    fun dealersGo(view: View) {
+    fun dealersGo(view: View?) {
         count = 0
+        score = 0
         playerTurn = false
     }
 
-    private fun makeDeckOfCards(): ArrayList<String> {
-        val deck: ArrayList<String> = ArrayList()
+    class Card (name: String, suit: Int, number: Int) {
+        val name: String = name
+        val number: Int = number
+    }
+
+    private fun makeDeckOfCards(): ArrayList<Card> {
+        val deck: ArrayList<Card> = ArrayList()
         for (suit in 1..4) {
             for (number in 1..13) {
-                var cardName = "card_" + suit + String.format("%02d", number)
-                deck.add(cardName)
+                var card = Card("card_" + suit + String.format("%02d", number), suit, number)
+                deck.add(card)
             }
         }
         return deck
     }
 
-    private fun getRandomCard(deck: ArrayList<String>): String {
+    private fun getRandomCard(): Card {
         val randomNumber = Random.nextInt(0, deck.size)
         val selectedCard = deck[randomNumber]
         deck.removeAt(randomNumber)
