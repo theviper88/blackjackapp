@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun newGame(view: View) {
+        count = 0
+        playerTurn = true
         setContentView(R.layout.game_screen)
     }
 
