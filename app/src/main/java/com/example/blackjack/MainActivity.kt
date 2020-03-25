@@ -14,6 +14,7 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
     private var count = 0
     var playerTurn = true
+    var deck = makeDeckOfCards()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     fun newGame(view: View) {
         count = 0
         playerTurn = true
+        deck = makeDeckOfCards()
         setContentView(R.layout.game_screen)
     }
 
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         imageView.layoutParams = params
 
-        var randomCard = getRandomCard()
+        var randomCard = getRandomCard(deck)
         val imageResource = resources.getIdentifier(randomCard , "drawable", packageName)
         imageView.setImageResource(imageResource)
 
@@ -71,11 +73,22 @@ class MainActivity : AppCompatActivity() {
         playerTurn = false
     }
 
-    private fun getRandomCard(): String {
-        val suit = Random.nextInt(1, 4)
-        val number = Random.nextInt(1, 13)
+    private fun makeDeckOfCards(): ArrayList<String> {
+        val deck: ArrayList<String> = ArrayList()
+        for (suit in 1..4) {
+            for (number in 1..13) {
+                var cardName = "card_" + suit + String.format("%02d", number)
+                deck.add(cardName)
+            }
+        }
+        return deck
+    }
 
-        return "card_" + suit + String.format("%02d", number)
+    private fun getRandomCard(deck: ArrayList<String>): String {
+        val randomNumber = Random.nextInt(0, deck.size)
+        val selectedCard = deck[randomNumber]
+        deck.removeAt(randomNumber)
+        return selectedCard
     }
 
 
