@@ -1,11 +1,18 @@
 package com.example.blackjack
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlin.random.Random
+
 
 class MainActivity : AppCompatActivity() {
+    private var count = 0
+    var playerTurn = true
+    var deck = makeDeckOfCards()
+    var score = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,11 +30,78 @@ class MainActivity : AppCompatActivity() {
     deck.addAll(card_names)
     deck.shuffle()*/
 
+    fun convertDpToPx(context: Context, dp: Int): Int {
+        return (dp * context.getResources().getDisplayMetrics().density).toInt()
+    }
+
     fun newGame(view: View) {
+        count = 0
+        score = 0
+        playerTurn = true
+        deck = makeDeckOfCards()
         setContentView(R.layout.game_screen)
     }
 
-    fun dealCard(view: View) {}
+    fun dealCard(view: View) {
+        count += 1
+        val parent = findViewById<RelativeLayout>(R.id.RelativeLayout01)
+
+        val imageView = ImageView(this)
+        val params = RelativeLayout.LayoutParams(
+            convertDpToPx(this, 100),
+            convertDpToPx(this, 125))
+        if(playerTurn) {
+            params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        } else {
+            params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        }
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        params.leftMargin = 50*(count - 1)
+
+        imageView.layoutParams = params
+
+        var randomCard = getRandomCard()
+        score += randomCard.number
+        val imageResource = resources.getIdentifier(randomCard.name , "drawable", packageName)
+        imageView.setImageResource(imageResource)
+
+        parent.addView(imageView)
+
+        if(score > 21) {
+            Toast.makeText(this,
+                "BUST!", Toast.LENGTH_LONG).show()
+            dealersGo(null)
+        }
+    }
+
+    fun dealersGo(view: View?) {
+        count = 0
+        score = 0
+        playerTurn = false
+    }
+
+    class Card (name: String, suit: Int, number: Int) {
+        val name: String = name
+        val number: Int = number
+    }
+
+    private fun makeDeckOfCards(): ArrayList<Card> {
+        val deck: ArrayList<Card> = ArrayList()
+        for (suit in 1..4) {
+            for (number in 1..13) {
+                var card = Card("card_" + suit + String.format("%02d", number), suit, number)
+                deck.add(card)
+            }
+        }
+        return deck
+    }
+
+    private fun getRandomCard(): Card {
+        val randomNumber = Random.nextInt(0, deck.size)
+        val selectedCard = deck[randomNumber]
+        deck.removeAt(randomNumber)
+        return selectedCard
+    }
 
 
 }
